@@ -32,11 +32,13 @@ ball.shape("square")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)  # where ball starts
+ball.dx = 2
+ball.dy = -2
 
 
 # funtion
 
-
+# left paddle
 def paddle_a_up():
     y = paddle_a.ycor()
     y += 20
@@ -47,6 +49,8 @@ def paddle_a_down():
     y = paddle_a.ycor()
     y -= 20
     paddle_a.sety(y)
+
+# Right Paddle
 
 
 def paddle_b_up():
@@ -71,3 +75,35 @@ wn.onkeypress(paddle_b_down, "Down")  # when "down" is pressed call funtion y
 # Main game loop
 while True:
     wn.update()
+
+    # move the ball
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+    # Border checking
+    # Top border
+    if ball.ycor() > 290:
+        ball.sety(290)
+        ball.dy *= -1
+    # Bottom Border
+    if ball.ycor() < -290:
+        ball.sety(-290)
+        ball.dy *= -1
+    # Right Border
+    if ball.xcor() > 390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+    # Left Border
+    if ball.xcor() < -390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+    # Paddle and Ball collisions
+    # Right Paddle
+    if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_b.ycor() + 40 and ball.ycor() > paddle_b.ycor() - 40):
+        ball.setx(340)
+        ball.dx *= -1
+
+    # Left Paddle
+    if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_a.ycor() + 40 and ball.ycor() > paddle_a.ycor() - 40):
+        ball.setx(-340)
+        ball.dx *= -1
